@@ -13,12 +13,6 @@ A dependency-free static portfolio with shared page generation, local fonts, a c
 
 Serve the contents of `dist` from the root of a static web host. No runtime server, API key, or JavaScript package installation is required. Pages and navigation render without JavaScript; theme preferences and activity visualization use JavaScript. Project write-ups reflect the supplied brief and the public repository READMEs, not an independent code audit.
 
-## Sources
-
-- Visual reference studied interactively: https://tabrez.ai.studio/ (layout, typography, theme toggle and project selector). No code, personal content, photographs, or proprietary assets copied.
-- Public project descriptions: https://github.com/Deepakreddy1510/AI_Data_Agent and https://github.com/Deepakreddy1510/pdf-rag-assistant
-- Fonts: Doto and Geist Mono from Google Fonts, licensed under the SIL Open Font License; licenses retained in `licenses/`.
-- Profile illustration supplied by the user.
 
 The homepage follows the supplied reference screenshots: a 720px desktop frame, a Social icon row, project dropdown and paging controls, moving technology strip with pause and reduced-motion support, and a GitHub calendar with three summary cells. About is part of section 01; Experience, Projects, Tools, GitHub, Education, and Connect are sections 02–07.
 
