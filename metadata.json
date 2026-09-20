@@ -1,0 +1,8 @@
+{
+  "name": "P Deepak Portfolio",
+  "description": "Personal portfolio of P Deepak, Electrical Engineering student at IIT Hyderabad, highlighting work in software, AI systems, and data engineering.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

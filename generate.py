@@ -1,12 +1,18 @@
 """Build the static pages. Edit shared markup and portfolio content here."""
+import shutil
 from pathlib import Path
 from html import escape
 
 ROOT = Path(__file__).parent / 'dist'
+PUBLIC = Path(__file__).parent / 'public'
 EMAIL = 'deepakreddy1510@gmail.com'
 GITHUB = 'https://github.com/Deepakreddy1510'
 LINKEDIN = 'https://www.linkedin.com/in/deepak-reddy-53a1a82a6/'
 LEETCODE = 'https://leetcode.com/u/Deepakreddy_2005/'
+
+ROOT.mkdir(parents=True, exist_ok=True)
+if PUBLIC.exists():
+    shutil.copytree(PUBLIC, ROOT, dirs_exist_ok=True)
 PROJECTS = [
     dict(number='01', title='AI Data Agent', slug='ai-data-agent', category='Agent workflows', repo=GITHUB+'/AI_Data_Agent', description='A natural-language interface to structured data, with a router coordinating specialized SQL and ETL workflows.'),
     dict(number='02', title='PDF RAG Assistant', slug='pdf-rag-assistant', category='Document retrieval', repo=GITHUB+'/pdf-rag-assistant', description='A multi-document retrieval system that turns PDF collections into grounded answers with traceable page-level evidence.'),
@@ -59,7 +65,12 @@ home=f'''<main id="main">
 <section class="section" id="activity">{heading('05','ACTIVITY','GITHUB')}<p class="activity-error" id="activity-loading" role="status">Loading public activity…</p><div id="activity-content" hidden><div class="activity-stats"><div><span class="stat-label">Contributions</span><strong id="activity-total"></strong></div><div><span class="stat-label">Best day</span><strong id="activity-best"></strong><small> contributions</small></div><div><span class="stat-label">Active days</span><strong id="activity-days"></strong><small> days</small></div></div><div class="calendar-frame"><div class="heatmap-scroll"><div class="calendar-inner"><div class="calendar-months" aria-hidden="true" id="calendar-months"></div><div class="heatmap" id="heatmap" role="img"></div></div></div><div class="calendar-legend" aria-hidden="true"><span>Less</span><i></i><i data-level="1"></i><i data-level="2"></i><i data-level="3"></i><i data-level="4"></i><span>More</span></div></div></div><div class="activity-bottom"><a href="{GITHUB}">○ @Deepakreddy1510</a><span id="activity-period">Public GitHub activity</span></div><div class="activity-updated" id="activity-updated"></div><noscript><p class="activity-error">View public contributions on the GitHub profile linked above.</p></noscript></section>
 <section class="section" id="education">{heading('06','BACKGROUND','Education')}<div class="education"><div>Indian Institute of Technology Hyderabad<small>B.Tech · Electrical Engineering</small></div><span class="year">Expected 2027</span></div></section>
 <section class="section connect" id="connect">{heading('07','LINKS','Connect')}<p>Open to interesting conversations and collaboration opportunities. Let's build something remarkable.</p><div class="connect-links">{connect}<a class="connect-link" href="mailto:{EMAIL}"><span class="connect-name">{MAIL_ICON} Email</span><span aria-hidden="true">↗</span></a><a class="connect-link" href="#resume-note" data-resume aria-controls="resume-note"><span class="connect-name">{RESUME_ICON} Resume</span><span aria-hidden="true">↗</span></a></div><p class="email-line"><a href="mailto:{EMAIL}">{EMAIL}</a></p><noscript><p class="resume-note">Resume coming soon. Please contact me by email.</p></noscript><div class="resume-note" id="resume-note" tabindex="-1" hidden>Resume coming soon. <a href="mailto:{EMAIL}">Contact me by email ↗</a></div></section></main>'''
-(ROOT/'index.html').write_text(frame(home))
+def write_page(filename, content):
+    (ROOT / filename).write_text(content)
+    if PUBLIC.exists():
+        (PUBLIC / filename).write_text(content)
+
+write_page('index.html', frame(home))
 
 def flow(items):
     return '<div class="flow">'+'<b aria-hidden="true">→</b>'.join('<span>'+escape(s)+'</span>' for s in items)+'</div>'
@@ -77,5 +88,5 @@ f'''<section class="section"><h2>The problem</h2><p>An answer over a collection 
 for i,p in enumerate(PROJECTS):
     other=PROJECTS[1-i]
     body=f'''<main id="main"><header class="detail-header"><a class="back-link" href="/#work">← Projects</a><div class="eyebrow">PROJECT {p['number']} / {p['category']}</div><h1>{p['title']}</h1><p>{p['description']}</p><a class="outline-link" href="{p['repo']}">View on GitHub <span aria-hidden="true">↗</span></a></header><div class="detail-content">{details[i]}</div><a class="next-project" href="/{other['slug']}.html"><div><span>EXPLORE PROJECT {other['number']}</span><strong>{other['title']}</strong></div><span aria-hidden="true">↗</span></a></main>'''
-    (ROOT/(p['slug']+'.html')).write_text(frame(body,p['title']+' — P Deepak',p['description']))
-(ROOT/'404.html').write_text(frame('<main id="main" class="section"><div class="eyebrow">404 / PAGE NOT FOUND</div><h1>Wrong turn.</h1><p>This page is not available.</p><a class="outline-link" href="/">Back to portfolio ↗</a></main>','Page not found — P Deepak'))
+    write_page(p['slug'] + '.html', frame(body, p['title'] + ' — P Deepak', p['description']))
+write_page('404.html', frame('<main id="main" class="section"><div class="eyebrow">404 / PAGE NOT FOUND</div><h1>Wrong turn.</h1><p>This page is not available.</p><a class="outline-link" href="/">Back to portfolio ↗</a></main>', 'Page not found — P Deepak'))
